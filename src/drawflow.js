@@ -1,4 +1,4 @@
-export default class Drawflow {
+class Drawflow {
   constructor(container, render = null, parent = null) {
     this.events = {};
     this.container = container;
@@ -1878,10 +1878,58 @@ export default class Drawflow {
     this.precanvas.innerHTML = "";
     this.drawflow = { "drawflow": { "Home": { "data": {} }}};
   }
-  export () {
+
+  export() {
     const dataExport = JSON.parse(JSON.stringify(this.drawflow));
     this.dispatch('export', dataExport);
+    
+    // Convert dataExport to JSON and save it as a file
+    const dataStr = JSON.stringify(dataExport, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    // Create a temporary link element
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'dataExport.json';
+
+    // Trigger the download
+    a.click();
+
+    // Clean up the URL object
+    URL.revokeObjectURL(url);
+
     return dataExport;
+  }
+
+  run () {
+    const dataExport = JSON.parse(JSON.stringify(this.drawflow));
+    const connector_yaml = convertJsonToYaml(dataExport, true);
+    //this.dispatch('export', connector_yaml);
+    return connector_yaml;
+  }
+
+  upload () {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+
+    input.onchange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const dataToImport = JSON.parse(e.target.result);
+                    editor.import(dataToImport);
+                } catch (error) {
+                    console.error('Invalid JSON file:', error);
+                }
+            };
+            reader.readAsText(file);
+        }
+    };
+    input.click();
   }
 
   import (data, notifi = true) {
