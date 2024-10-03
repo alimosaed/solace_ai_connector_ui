@@ -16,5 +16,35 @@ Solace AI Flow enables you to effortlessly create and run AI and data flows usin
 - **One-Click Deployment**: Deploy and run workflows with a single click.
 - **Extract and upload workflows**: Save workflows for future use by extracting and uploading them as needed.
 
+## Installation
+Clone the repository.
+```
+  git clone https://github.com/alimosaed/solace_ai_connector_ui.git
+```
+
+### Setup the web server.
+- (Optional) Create a Python environment
+```
+  python -m venv venv
+  source venv/bin/activate
+```
+
+- Setup the required Python packages.
+```
+  pip install -r requirements.txt
+```
+
+- Run server
+```
+  cd server
+  python server.py
+```
+
+### Setup the Solace AI Connector
+Follow [Solace AI Connector](https://github.com/SolaceDev/solace-ai-connector/blob/main/docs/getting_started.md) instruction and install the Solace PubSub+ Event Broker and Solace AI Connector.
+
+### Render Frontend
+Open the index.html file from docs folder on the browser.
+
 ## License
 MIT License
